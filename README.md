@@ -3,6 +3,50 @@
 Purpose of this project is to provide a library that can be used to calculate a rate as well as an average.
 Both information is calculated on a per second basis and a history is captured on a per second basis as well.
 
+## Get started
+
+This section explains how to integrate and use this library.
+
+```go
+include "github.com/janwiemers/request_rate"
+
+rps := NewRequestRate()
+rps.Start()
+
+// business logic
+
+log.Printf("You have %i per second", rps.Rate())
+```
+
+If you want to measure the request rate
+
+```go
+resp, err := http.Get("https://your-url.goes/here")
+if err != nil {
+   log.Fatalln(err)
+}
+rps.Incr(1)
+```
+
+If you want to measure the duration of your requests or computation alongside with the rate.
+
+```go
+
+uuid := rps.Observe(1)
+
+resp, err := http.Get("https://your-url.goes/here")
+if err != nil {
+   log.Fatalln(err)
+}
+
+duration, err := rps.Finish(uuid)
+if err != nil {
+  log.Fatal(err)
+}
+log.Println(duration)
+
+```
+
 ## How to Contribute
 
 We'd love to accept your patches and contributions to this project. There are
