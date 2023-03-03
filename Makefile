@@ -1,5 +1,5 @@
 .PHONY: default
-default: deploy;
+default: test;
 
 build:
 	go build
